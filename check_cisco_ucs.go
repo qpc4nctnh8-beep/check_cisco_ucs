@@ -357,6 +357,10 @@ func getXmlAttr(xml_data string, element_name string, attributes []string) (resu
 
 			if name == element_name {
 				counter++
+				// Reset the values slice for each new element
+                for i := range values {
+                    values[i] = ""
+                }
 				for _, attr := range token.(xml.StartElement).Attr {
 					attr_name := attr.Name.Local
 					attr_value := attr.Value
@@ -364,6 +368,7 @@ func getXmlAttr(xml_data string, element_name string, attributes []string) (resu
 						values[i] = attr_value
 					}
 					resultStr = strings.Join(values, ",")
+
 				}
 				result = append(result, strings.TrimRight(resultStr, ","))
 				resultStr = ""
@@ -591,8 +596,10 @@ func main() {
 
 	debugPrintf(3, "\n%v\n\n", r)
 	for _, val := range r {
-		n := len(re.FindAllString(val, -1))
-		num_found += n
+		matches := re.FindAllString(val, -1)
+		if len(matches) > 0 {
+		num_found++
+		}
 		debugPrintf(3, "%s num_found=%d n=%d", val, num_found, n)
 		if n == 0 && faultsOnly {
 			output += "\n" + val
