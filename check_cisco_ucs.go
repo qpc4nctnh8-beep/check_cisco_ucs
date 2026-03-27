@@ -596,6 +596,7 @@ func main() {
 
 	debugPrintf(3, "\n%v\n\n", r)
 	for _, val := range r {
+		// Prevent duplicate matches
 		matches := re.FindAllString(val, -1)
 		if len(matches) > 0 {
 		num_found++
