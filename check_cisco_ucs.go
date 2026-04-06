@@ -357,7 +357,7 @@ func getXmlAttr(xml_data string, element_name string, attributes []string) (resu
 
 			if name == element_name {
 				counter++
-				// Reset the values slice for each new element
+		// Anderson added this to reset the values slice for each new element, so it doesn't retain old data
                 for i := range values {
                     values[i] = ""
                 }
@@ -596,7 +596,7 @@ func main() {
 
 	debugPrintf(3, "\n%v\n\n", r)
 	for _, val := range r {
-		// Prevent duplicate matches
+		// Anderson added the next 4 lines to address duplicates
 		matches := re.FindAllString(val, -1)
 		if len(matches) > 0 {
 		num_found++
@@ -622,7 +622,16 @@ func main() {
 		prefix = "CRIT"
 		ret_val = 2
 	}
-
-	fmt.Printf("%s - %s (%d of %d ok)\n", prefix, output, num_found, n)
+	
+	// Decide output format based on number of results
+	if len(r) == 1 {
+	    // Single result: print on the same line
+	    output = r[0]
+	    fmt.Printf("%s - %s %s\n", prefix, output, "")
+	} else {
+	    // Multiple results: print status line and results on separate lines
+    	    fmt.Printf("%s - %s (%d of %d ok)\n", prefix, output, num_found, n)
+	}
 	os.Exit(ret_val)
 }
+
