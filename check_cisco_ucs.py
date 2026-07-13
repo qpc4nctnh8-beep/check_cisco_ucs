@@ -55,6 +55,8 @@ def create_ssl_context(max_tls_version="1.1"):
     
     if max_tls_version == "1.2":
         context.maximum_version = ssl.TLSVersion.TLSv1_2
+    elif max_tls_version == "1.3":
+        context.maximum_version = ssl.TLSVersion.TLSv1_3
     else:
         context.maximum_version = ssl.TLSVersion.TLSv1_1
     
@@ -217,7 +219,7 @@ def main():
                         help='OK if zero instances found')
     parser.add_argument('-F', '--faults-only', action='store_true',
                         help='Display only faults in output')
-    parser.add_argument('-M', '--tls-version', default='1.1', choices=['1.1', '1.2'],
+    parser.add_argument('-M', '--tls-version', default='1.1', choices=['1.1', '1.2', '1.3'],
                         help='Max TLS version (default: 1.1)')
     parser.add_argument('-f', '--filter', default='',
                         help='Property filter: type:property:value')
